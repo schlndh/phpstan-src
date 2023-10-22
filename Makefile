@@ -55,7 +55,7 @@ cs-fix:
 	php build-cs/vendor/bin/phpcbf
 
 phpstan:
-	php bin/phpstan clear-result-cache -q && php -d memory_limit=448M bin/phpstan
+	php bin/phpstan clear-result-cache -q && php -d memory_limit=500M bin/phpstan
 
 phpstan-result-cache:
 	php -d memory_limit=448M bin/phpstan

@@ -32,13 +32,7 @@ jobs:
       matrix:
         php-version:
           - "7.2"
-          - "7.3"
-          - "7.4"
-          - "8.0"
-          - "8.1"
-          - "8.2"
-          - "8.3"
-        operating-system: [ubuntu-latest, windows-latest]
+        operating-system: [ubuntu-latest]
 
     steps:
       - name: "Checkout"
@@ -108,7 +102,7 @@ jobs:
         run: "composer require --dev phpunit/phpunit:^8.5.31 brianium/paratest:^4.0 --update-with-dependencies --ignore-platform-reqs"
 
       - name: "PHPStan"
-        run: "make phpstan"
+        run: "SHELL_VERBOSITY=3 make phpstan"
 
   static-analysis-with-result-cache:
     name: "PHPStan with result cache"

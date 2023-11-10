@@ -12,6 +12,7 @@ on:
   push:
     branches:
       - "1.10.x"
+      - "experiment-fix-reflectionGoldenTest"
     paths-ignore:
       - 'compiler/**'
       - 'apigen/**'
@@ -73,6 +74,11 @@ jobs:
           - "8.3"
 
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: "Download phpSymbols.txt"
         uses: actions/download-artifact@v3
         with:
@@ -82,7 +88,7 @@ jobs:
       - name: "Checkout base commit"
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.base.sha || github.event.push.before }}
+          ref: ${{ github.event.pull_request.base.sha || github.event.before }}
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"

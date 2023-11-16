@@ -163,6 +163,9 @@ class TypehintHelper
 	): Type
 	{
 		if ($phpDocType !== null && !$phpDocType instanceof ErrorType) {
+			if ($phpDocType instanceof ObjectType && $phpDocType->getClassName() === \Traversable::class && $type instanceof IterableType) {
+				return $type;
+			}
 			if ($phpDocType instanceof NeverType && $phpDocType->isExplicit()) {
 				return $phpDocType;
 			}

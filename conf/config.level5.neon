@@ -5,6 +5,10 @@ parameters:
 	checkFunctionArgumentTypes: true
 	checkArgumentsPassedByReference: true
 
+conditionalTags:
+	PHPStan\Rules\Functions\ParameterCastableToNumberRule:
+		phpstan.rules.rule: %featureToggles.bleedingEdge%
+
 rules:
 	- PHPStan\Rules\DateTimeInstantiationRule
 	- PHPStan\Rules\Functions\CallUserFuncRule
@@ -36,3 +40,5 @@ services:
 			treatPhpDocTypesAsCertainTip: %tips.treatPhpDocTypesAsCertain%
 		tags:
 			- phpstan.rules.rule
+	-
+		class: PHPStan\Rules\Functions\ParameterCastableToNumberRule

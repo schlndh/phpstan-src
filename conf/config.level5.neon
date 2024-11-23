@@ -7,7 +7,7 @@ parameters:
 
 conditionalTags:
 	PHPStan\Rules\Functions\ParameterCastableToNumberRule:
-		phpstan.rules.rule: %featureToggles.bleedingEdge%
+		phpstan.rules.rule: %featureToggles.checkParameterCastableToNumberFunctions%
 
 rules:
 	- PHPStan\Rules\DateTimeInstantiationRule

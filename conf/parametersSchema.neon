@@ -28,6 +28,7 @@ parametersSchema:
 	])
 	featureToggles: structure([
 		bleedingEdge: bool(),
+		checkParameterCastableToNumberFunctions: bool(),
 		skipCheckGenericClasses: listOf(string()),
 		stricterFunctionMap: bool()
 	])

@@ -6,6 +6,8 @@ use PHPStan\Rules\ParameterCastableToStringCheck;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Testing\RuleTestCase;
+use function array_map;
+use function str_replace;
 use const PHP_VERSION_ID;
 
 /**
@@ -22,7 +24,7 @@ class ParameterCastableToNumberRuleTest extends RuleTestCase
 
 	public function testRule(): void
 	{
-		$this->analyse([__DIR__ . '/data/param-castable-to-number-functions.php'], [
+		$this->analyse([__DIR__ . '/data/param-castable-to-number-functions.php'], $this->hackPhp74ErrorMessages([
 			[
 				'Parameter #1 $array of function array_sum expects an array of values castable to number, array<int, array<int, int>> given.',
 				20,
@@ -71,7 +73,7 @@ class ParameterCastableToNumberRuleTest extends RuleTestCase
 				'Parameter #1 $array of function array_product expects an array of values castable to number, array<int, ParamCastableToNumberFunctions\\ClassWithToString> given.',
 				32,
 			],
-		]);
+		]));
 	}
 
 	public function testNamedArguments(): void
@@ -126,6 +128,35 @@ class ParameterCastableToNumberRuleTest extends RuleTestCase
 				14,
 			],
 		]);
+	}
+
+	/**
+	 * @param list<array{0: string, 1: int, 2?: string|null}> $errors
+	 * @return list<array{0: string, 1: int, 2?: string|null}>
+	 */
+	private function hackPhp74ErrorMessages(array $errors): array
+	{
+		if (PHP_VERSION_ID >= 80000) {
+			return $errors;
+		}
+
+		return array_map(static function (array $error): array {
+			$error[0] = str_replace(
+				[
+					'$array of function array_sum',
+					'$array of function array_product',
+					'array<int, CurlHandle>',
+				],
+				[
+					'$input of function array_sum',
+					'$input of function array_product',
+					'array<int, resource>',
+				],
+				$error[0],
+			);
+
+			return $error;
+		}, $errors);
 	}
 
 }
